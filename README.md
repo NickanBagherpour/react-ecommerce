@@ -6,3 +6,6 @@
 * create and switch to `develop` branch
 * `npm install node-sass`
 
+----
+## Other Packages
+> for routing use `npm install react-router-dom`
