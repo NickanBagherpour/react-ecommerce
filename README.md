@@ -9,3 +9,5 @@
 ----
 ## Other Packages
 > for routing use `npm install react-router-dom`
+
+> add firebase `npm install firebase` for backend purposes [ db , auth ]
