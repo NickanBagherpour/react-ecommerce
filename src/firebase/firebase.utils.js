@@ -6,7 +6,13 @@ import {
   setDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider, signInWithPopup,signInWithEmailAndPassword ,createUserWithEmailAndPassword} from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCePk_xapjNxZHoJzClK4ay4PzRTLXySns",
@@ -33,7 +39,6 @@ export const signInWithGoogle = () =>
       // const token = credential.accessToken;
       //// The signed-in user info.
       // const user = result.user;
-
       // console.log(`token: ${token} - credential: ${credential}`);
     })
     .catch((error) => {
@@ -44,13 +49,10 @@ export const signInWithGoogle = () =>
       // const email = error.email;
       //// The AuthCredential type that was used.
       // const credential = GoogleAuthProvider.credentialFromError(error);
-
       //// console.log(`errorCode: ${errorCode} - errorMessage: ${errorMessage} - credential: ${credential}`);
-
     });
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
-
   if (!userAuth) return;
 
   const userRef = doc(firestore, `users/${userAuth.uid}`);
@@ -83,20 +85,23 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 export const customCreateUserWithEmailAndPassword = async (email, password) => {
   // if (!userAuth) return;
 
-  try{
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     const user = userCredential.user;
 
     return user;
-  }
-  catch(error){
+  } catch (error) {
     console.error(error);
     // const errorCode = error.code;
     // const errorMessage = error.message;
     // ..
-  };
+  }
 
-/*   .then((userCredential) => {
+  /*   createUserWithEmailAndPassword.then((userCredential) => {
     // Signed in 
     user = userCredential.user;
     // ...
@@ -110,5 +115,37 @@ export const customCreateUserWithEmailAndPassword = async (email, password) => {
   return null;
 };
 
+export const customSignInWithEmailAndPassword = async (email, password) => {
+  // if (!userAuth) return;
+
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+
+    return user;
+  } catch (error) {
+    console.error(error);
+    // const errorCode = error.code;
+    // const errorMessage = error.message;
+    // ..
+  }
+
+  /*   signInWithEmailAndPassword.then((userCredential) => {
+    // Signed in 
+    user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  }); */
+
+  return null;
+};
 
 // export default firebase;
