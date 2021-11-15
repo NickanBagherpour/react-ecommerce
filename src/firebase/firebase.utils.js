@@ -6,7 +6,7 @@ import {
   setDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup,signInWithEmailAndPassword ,createUserWithEmailAndPassword} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCePk_xapjNxZHoJzClK4ay4PzRTLXySns",
@@ -50,7 +50,6 @@ export const signInWithGoogle = () =>
     });
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
-  console.log(`begin createUserProfileDocument`);
 
   if (!userAuth) return;
 
@@ -80,5 +79,36 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   return userRef;
 };
+
+export const customCreateUserWithEmailAndPassword = async (email, password) => {
+  // if (!userAuth) return;
+
+  try{
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    return user;
+  }
+  catch(error){
+    console.error(error);
+    // const errorCode = error.code;
+    // const errorMessage = error.message;
+    // ..
+  };
+
+/*   .then((userCredential) => {
+    // Signed in 
+    user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  }); */
+
+  return null;
+};
+
 
 // export default firebase;
