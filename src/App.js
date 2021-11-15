@@ -5,7 +5,11 @@ import Header from "./components/header/header.component.jsx";
 import AuthPage from "./pages/auth/auth.component";
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
-import { auth } from './firebase/firebase.utils';
+import {
+  auth,
+  createUserProfileDocument,
+  onSnap,
+} from "./firebase/firebase.utils";
 
 import "./App.css";
 
@@ -20,19 +24,36 @@ class App extends React.Component {
 
   unsubscribeFromAuth = null;
 
-  componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({ currentUser: user });
+  // componentDidMount() {
+  //   this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+  //     this.setState({ currentUser: user });
 
-      console.log(user);
+  //     console.log(user);
+  //   });
+  // }
+
+  componentDidMount() {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        const unsub = onSnap(userRef, (doc) => {
+          this.setState({
+            currentUser: {
+              id: doc.id,
+              ...doc.data(),
+            },
+          });
+        });
+      }
+
+      this.setState({ currentUser: userAuth }, () => console.log(this.state)); //userAuth is null here , it means set currentUser to null , sign out
     });
   }
 
   componentWillUnmount() {
     this.unsubscribeFromAuth();
   }
-
-
 
   render() {
     return (
