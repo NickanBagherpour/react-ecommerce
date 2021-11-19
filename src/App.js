@@ -1,5 +1,8 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { connect } from "react-redux";
+
+import { setCurrentUser } from "./redux/user/user.actions";
 
 import Header from "./components/header/header.component.jsx";
 import AuthPage from "./pages/auth/auth.component";
@@ -14,35 +17,23 @@ import {
 import "./App.css";
 
 class App extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      currentUser: null,
-    };
-  }
-
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    const { setCurrentUser } = this.props;
+
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
         const unsub = onSnap(userRef, (doc) => {
-          this.setState(
-            {
-              currentUser: {
-                id: doc.id,
-                ...doc.data(),
-              },
-            },
-            () => console.log(this.state)
-          );
+          setCurrentUser({
+            id: doc.id,
+            ...doc.data(),
+          });
         });
       }
-
-      this.setState({ currentUser: userAuth }, () => console.log(this.state)); //userAuth is null here , it means set currentUser to null , sign out
+      setCurrentUser(userAuth); //userAuth is null here , it means set currentUser to null , sign out
     });
   }
 
@@ -53,7 +44,7 @@ class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
@@ -64,4 +55,8 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(App);
