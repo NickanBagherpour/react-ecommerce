@@ -20,3 +20,5 @@
 > add `npm install redux-persist`
 - We don't want our users to lose their some info (e.g. carts) whenever they refresh, so we are going to leverage one of the benefits of redux by persisting our store object in localstorage using redux-persist.
 
+> add `npm install react-stripe-checkout` for payment purposes
+
