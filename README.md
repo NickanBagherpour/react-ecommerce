@@ -22,3 +22,5 @@
 
 > add `npm install react-stripe-checkout` for payment purposes
 
+> add `npm install styled-components`
+- We are now adding styled-components to explore CSS-in-JS
