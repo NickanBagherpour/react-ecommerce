@@ -24,18 +24,18 @@ export const fetchCollectionsFailure = errorMessage => ({
     payload: errorMessage
 });
 
-export const fetchCollectionsStartAsync = () => {
-    return /*async*/ dispatch => {
-        const collectionRef = getCollection('collections');
-        dispatch(fetchCollectionsStart());
-
-        /*await*/
-        getDocsFromCollection(collectionRef).then(
-            snapshot => {
-                const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
-                dispatch(fetchCollectionsSuccess(collectionsMap));
-            }
-        ).catch(error => dispatch(fetchCollectionsFailure(error.message)));
-
-    };
-};
+// export const fetchCollectionsStartAsync = () => {
+//     return /*async*/ dispatch => {
+//         const collectionRef = getCollection('collections');
+//         dispatch(fetchCollectionsStart());
+//
+//         /*await*/
+//         getDocsFromCollection(collectionRef).then(
+//             snapshot => {
+//                 const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
+//                 dispatch(fetchCollectionsSuccess(collectionsMap));
+//             }
+//         ).catch(error => dispatch(fetchCollectionsFailure(error.message)));
+//
+//     };
+// };
