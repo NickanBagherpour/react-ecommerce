@@ -28,3 +28,5 @@
 > add `npm install redux-thunk` for asynchronous event handling 
 - With a plain basic Redux store, you can only do simple synchronous updates by dispatching an action.
 - Thunks are the recommended middleware for basic Redux side effects logic, including complex synchronous logic that needs access to the store, and simple async logic like AJAX requests.
+
+> add `npm install redux-saga` [redux side effect manager]
