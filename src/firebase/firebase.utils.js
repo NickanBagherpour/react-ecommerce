@@ -4,6 +4,7 @@ import {
     doc,
     getDoc,
     setDoc,
+    getDocs,
     onSnapshot,
     collection,
     writeBatch,
@@ -164,6 +165,10 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
 export const getCollection = (collectionKey) => {
     const collectionRef = collection(firestore, collectionKey);
     return collectionRef;
+};
+
+export const getDocsFromCollection = (collectionRef) => {
+    return getDocs(collectionRef);
 };
 
 export const convertCollectionsSnapshotToMap = collections => {
