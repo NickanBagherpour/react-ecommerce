@@ -103,6 +103,16 @@ export const getUserByRef = async (userRef) => {
     return snapShot;
 };
 
+export const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = auth.onAuthStateChanged(userAuth => {
+            unsubscribe();
+            resolve(userAuth);
+        }, reject);
+    });
+};
+
+
 export const customCreateUserWithEmailAndPassword = async (email, password) => {
     // if (!userAuth) return;
 
@@ -187,6 +197,8 @@ export const convertCollectionsSnapshotToMap = collections => {
         return accumulator;
     }, {});
 };
+
+export const userSignOut = () => auth.signOut();
 
 
 // export default firebase;
