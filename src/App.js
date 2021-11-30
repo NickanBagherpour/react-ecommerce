@@ -20,21 +20,21 @@ class App extends React.Component {
     componentDidMount() {
         const {setCurrentUser} = this.props;
 
-        this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-            if (userAuth) {
-                const userRef = await createUserProfileDocument(userAuth);
-
-                /*const unsub =*/ onSnap(userRef, (doc) => {
-                    setCurrentUser({
-                        id: doc.id,
-                        ...doc.data(),
-                    });
-                });
-            }
-            setCurrentUser(userAuth); //userAuth is null here , it means set currentUser to null , sign out
-           // await addCollectionAndDocuments('collections',collectionsArray.map(({title,items}) => ({title,items})));
-
-        });
+        // this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+        //     if (userAuth) {
+        //         const userRef = await createUserProfileDocument(userAuth);
+        //
+        //         /*const unsub =*/ onSnap(userRef, (doc) => {
+        //             setCurrentUser({
+        //                 id: doc.id,
+        //                 ...doc.data(),
+        //             });
+        //         });
+        //     }
+        //     setCurrentUser(userAuth); ////userAuth is null here , it means set currentUser to null , sign out
+        //    //// await addCollectionAndDocuments('collections',collectionsArray.map(({title,items}) => ({title,items})));
+        //
+        // });
     }
 
     componentWillUnmount() {

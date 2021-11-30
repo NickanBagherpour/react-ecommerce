@@ -31,11 +31,16 @@ export const auth = getAuth(firebaseApp);
 export const firestore = getFirestore(firebaseApp);
 export const onSnap = onSnapshot;
 
-const provider = new GoogleAuthProvider();
-provider.setCustomParameters({prompt: "select_account"});
+export const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({prompt: "select_account"});
 
-export const signInWithGoogle = () =>
-    signInWithPopup(auth, provider)
+
+export const signInWithGoogle = () => {
+    return signInWithPopup(auth, googleProvider);
+};
+
+export const signInWithGoogleOld = () =>
+    signInWithPopup(auth, googleProvider)
         .then((result) => {
             //// This gives you a Google Access Token. You can use it to access the Google API.
             // const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -85,6 +90,19 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     return userRef;
 };
 
+export const getUserByRef = async (userRef) => {
+    if (!userRef) return;
+
+    const snapShot = await getDoc(userRef);
+
+    // console.log(`snapShot.exists ${snapShot.exists()}`);
+    // console.log(`snapShot.data ${snapShot.data()}`);
+
+    const {displayName, email} = snapShot.data();
+
+    return snapShot;
+};
+
 export const customCreateUserWithEmailAndPassword = async (email, password) => {
     // if (!userAuth) return;
 
@@ -119,8 +137,6 @@ export const customCreateUserWithEmailAndPassword = async (email, password) => {
 };
 
 export const customSignInWithEmailAndPassword = async (email, password) => {
-    // if (!userAuth) return;
-
     try {
         const userCredential = await signInWithEmailAndPassword(
             auth,
@@ -137,17 +153,6 @@ export const customSignInWithEmailAndPassword = async (email, password) => {
         // ..
     }
 
-    /*   signInWithEmailAndPassword.then((userCredential) => {
-      // Signed in
-      user = userCredential.user;
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
-    }); */
-
     return null;
 };
 
@@ -162,18 +167,13 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
     return await batch.commit();
 };
 
-export const getCollection = (collectionKey) => {
-    const collectionRef = collection(firestore, collectionKey);
-    return collectionRef;
-};
+export const getCollection = collectionKey => collection(firestore, collectionKey);
 
-export const getDocsFromCollection = (collectionRef) => {
-    return getDocs(collectionRef);
-};
+export const getDocsFromCollection = collectionRef => getDocs(collectionRef);
 
 export const convertCollectionsSnapshotToMap = collections => {
     const transformedCollection = collections.docs.map(doc => {
-        const { title, items } = doc.data();
+        const {title, items} = doc.data();
         return {
             routeName: encodeURI(title.toLowerCase()),
             id: doc.id,
