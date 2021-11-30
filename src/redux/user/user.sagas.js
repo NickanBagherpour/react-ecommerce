@@ -4,48 +4,45 @@ import UserActionTypes from "./user.types";
 import {
     signInWithGoogle as signWithGoogle,
     createUserProfileDocument,
-    getUserByRef, customSignInWithEmailAndPassword
+    getUserByRef,
+    customSignInWithEmailAndPassword
 } from "../../firebase/firebase.utils";
-import {emailSignInFailure, emailSignInSuccess, googleSignInFailure, googleSignInSuccess} from "./user.actions";
+import {signInFailure, signInSuccess} from "./user.actions";
+
+export function* getSnapshotFromUserAuth(userAuth) {
+    try {
+        const userRef = yield call(createUserProfileDocument, userAuth);
+        // console.log(userRef);
+        const userSnapshot = yield call(getUserByRef, userRef);
+        yield put(
+            signInSuccess({
+                id: userSnapshot.id,
+                ...userSnapshot.data(),
+            })
+        );
+
+    } catch (error) {
+        yield put(signInFailure(error));
+    }
+}
 
 export function* signInWithGoogle() {
     try {
         const credential = yield signWithGoogle();
         // console.log(credential);
         const {user} = credential;
-        // console.log(user);
-        const userRef = yield call(createUserProfileDocument, user);
-        // console.log(userRef);
-        const userSnapshot = yield call(getUserByRef, userRef);
-        yield put(
-            googleSignInSuccess({
-                id: userSnapshot.id,
-                ...userSnapshot.data(),
-            })
-        );
-
+        yield getSnapshotFromUserAuth(user);
     } catch (error) {
-        yield put(googleSignInFailure(error));
+        yield put(signInFailure(error));
     }
 }
 
 export function* signInWithEmail({payload: {email, password}}) {
     try {
-
         const user = yield customSignInWithEmailAndPassword(email, password);
-
-        const userRef = yield call(createUserProfileDocument, user);
-
-        const userSnapshot = yield call(getUserByRef, userRef);
-
-        yield put(
-            emailSignInSuccess({
-                id: userSnapshot.id,
-                ...userSnapshot.data(),
-            })
-        );
+        yield getSnapshotFromUserAuth(user);
     } catch (error) {
-        yield put(emailSignInFailure(error));
+        yield put(signInFailure(error));
     }
 }
 
