@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
 import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
-import {connect} from "react-redux";
-import {createStructuredSelector} from "reselect";
+import {useSelector, useDispatch} from "react-redux";
 
 import {selectCurrentUser} from "./redux/user/user.selectors";
 import {checkUserSession} from "./redux/user/user.actions";
@@ -14,11 +13,14 @@ import CheckoutPage from "./pages/checkout/checkout.component";
 
 import "./App.css";
 
-const App = ({doCheckUserSession, currentUser}) => {
+const App = () => {
+
+    const currentUser = useSelector(selectCurrentUser)
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        doCheckUserSession()
-    }, [doCheckUserSession]); //cause doCheckUserSession is in props
+        dispatch(checkUserSession());
+    }, [dispatch]); //cause doCheckUserSession is in props
 
     return (
         <BrowserRouter>
@@ -36,24 +38,4 @@ const App = ({doCheckUserSession, currentUser}) => {
     );
 }
 
-const mapDispatchToProps = dispatch => ({
-    doCheckUserSession: () => dispatch(checkUserSession()),
-});
-
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
-    // collectionsArray: selectCollectionsForPreview
-});
-
-/*
-or
-const mapStateToProps = ({user: {currentUser}}) => ({
-  currentUser : currentUser
-});
-or
-const mapStateToProps = state => ({
-  currentUser : state.user.currentUser
-});
-*/
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

@@ -16,4 +16,5 @@ const CollectionPageContainer = compose(
     WithSpinner,
 )(CollectionPage);
 
+//todo refactor this pattern with hook ... !!!
 export default CollectionPageContainer;
