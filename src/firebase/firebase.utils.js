@@ -113,8 +113,9 @@ export const getCurrentUser = () => {
 };
 
 
-export const customCreateUserWithEmailAndPassword = async (email, password) => {
+export const customCreateUserWithEmailAndPasswordAsync = async (email, password) => {
     // if (!userAuth) return;
+
 
     try {
         const userCredential = await createUserWithEmailAndPassword(
@@ -144,6 +145,12 @@ export const customCreateUserWithEmailAndPassword = async (email, password) => {
     }); */
 
     return null;
+};
+
+export const customCreateUserWithEmailAndPassword = (email, password) => {
+
+    return createUserWithEmailAndPassword(auth, email, password);
+
 };
 
 export const customSignInWithEmailAndPassword = async (email, password) => {
