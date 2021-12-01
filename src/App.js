@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import {createStructuredSelector} from "reselect";
@@ -14,36 +14,30 @@ import CheckoutPage from "./pages/checkout/checkout.component";
 
 import "./App.css";
 
-class App extends React.Component {
+const App = ({doCheckUserSession, currentUser}) => {
 
-    componentDidMount() {
-        this.props.doCheckUserSession()
-    }
+    useEffect(() => {
+        doCheckUserSession()
+    }, [doCheckUserSession]); //cause doCheckUserSession is in props
 
-    render() {
-        return (
-            <BrowserRouter>
-                <Header/>
-                <Switch>
-                    <Route exact path="/" component={HomePage}/>
-                    <Route path="/shop" component={ShopPage}/>
-                    <Route exact path='/checkout' component={CheckoutPage}/>
+    return (
+        <BrowserRouter>
+            <Header/>
+            <Switch>
+                <Route exact path="/" component={HomePage}/>
+                <Route path="/shop" component={ShopPage}/>
+                <Route exact path='/checkout' component={CheckoutPage}/>
 
-                    <Route
-                        exact
-                        path="/auth"
-                        render={() =>
-                            this.props.currentUser ? <Redirect to="/"/> : <AuthPage/>
-                        }
-                    />
-                </Switch>
-            </BrowserRouter>
-        );
-    }
+                <Route exact path="/auth"
+                       render={() => currentUser ? <Redirect to="/"/> : <AuthPage/>}
+                />
+            </Switch>
+        </BrowserRouter>
+    );
 }
 
 const mapDispatchToProps = dispatch => ({
-    doCheckUserSession : () => dispatch(checkUserSession()),
+    doCheckUserSession: () => dispatch(checkUserSession()),
 });
 
 const mapStateToProps = createStructuredSelector({
@@ -62,4 +56,4 @@ const mapStateToProps = state => ({
 });
 */
 
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
