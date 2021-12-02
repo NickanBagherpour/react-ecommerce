@@ -7,6 +7,7 @@
 * `npm install node-sass`
 
 ----
+
 ## Other Packages
 > for routing use `npm install react-router-dom`
 
@@ -30,3 +31,9 @@
 - Thunks are the recommended middleware for basic Redux side effects logic, including complex synchronous logic that needs access to the store, and simple async logic like AJAX requests.
 
 > add `npm install redux-saga` [redux side effect manager]
+
+
+## Update Packages
+for updating specific package use `npm update <package>` like `npm update react-router-dom` 
+, with yarn use [`yarn upgrade <package>`]
+
