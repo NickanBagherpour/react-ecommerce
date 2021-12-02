@@ -18,7 +18,6 @@ const CheckoutPage = () => {
     const cartItems = useSelector(selectCartItems);
     const total = useSelector(selectCartTotal);
 
-
     return (
         <CheckoutPageContainer>
             <CheckoutHeaderContainer>
@@ -51,6 +50,5 @@ const CheckoutPage = () => {
         </CheckoutPageContainer>
     );
 };
-
 
 export default CheckoutPage;
