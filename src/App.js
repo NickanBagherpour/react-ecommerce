@@ -7,6 +7,7 @@ import {checkUserSession} from "./redux/user/user.actions";
 
 import Header from "./components/header/header.component.jsx";
 import Spinner from "./components/spinner/spinner.component.jsx";
+import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 
 import {GlobalStyle} from "./global.styles";
 
@@ -29,14 +30,16 @@ const App = () => {
             <GlobalStyle/>
             <Header/>
             <Switch>
-                <Suspense fallback={<Spinner/>}>
-                    <Route exact path="/" component={HomePage}/>
-                    <Route path="/shop" component={ShopPage}/>
-                    <Route exact path='/checkout' component={CheckoutPage}/>
-                    <Route exact path="/auth"
-                           render={() => currentUser ? <Redirect to="/"/> : <AuthPage/>}
-                    />
-                </Suspense>
+                <ErrorBoundary>
+                    <Suspense fallback={<Spinner/>}>
+                        <Route exact path="/" component={HomePage}/>
+                        <Route path="/shop" component={ShopPage}/>
+                        <Route exact path='/checkout' component={CheckoutPage}/>
+                        <Route exact path="/auth"
+                               render={() => currentUser ? <Redirect to="/"/> : <AuthPage/>}
+                        />
+                    </Suspense>
+                </ErrorBoundary>
             </Switch>
         </BrowserRouter>
     );
